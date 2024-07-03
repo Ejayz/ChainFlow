@@ -31,3 +31,54 @@ body {
     text-wrap: balance;
   }
 }
+
+.animate-exchange-form-from-right-to-left {
+  animation: exchange-form-from-right-to-left ease-out 1s;
+}
+
+@keyframes exchange-form-from-right-to-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.animate-exchange-form-from-left-to-right {
+  animation: exchange-form-from-left-to-right ease-out 1s;
+}
+
+@keyframes exchange-form-from-left-to-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.vanish-exchange-form {
+  animation: vanish-exchange-form 1.5s;
+}
+
+@keyframes vanish-exchange-form {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.show-exchange-form {
+  animation: show-exchange-form 1.5s;
+}
+
+@keyframes show-exchange-form {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
