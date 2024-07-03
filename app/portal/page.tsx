@@ -1,14 +1,14 @@
 import ContentPage from "@/components/ui/ContentPage";
 import LandingPageHeader from "@/components/ui/LandingPageHeader";
 import LogInComponent from "@/components/ui/LogInComponent";
-import SignUpLoginView from "@/components/view/SignUpLoginView";
-import Image from "next/image";
 
 export default function Home() {
   return (
-    <ContentPage cssStyle={"flex-col"}>
+    <ContentPage  cssStyle={"flex-col"}>
       <LandingPageHeader />
-      <SignUpLoginView />
+      <section className="flex flex-col items-center justify-center w-full bg-base-100 h-full">
+        <LogInComponent />
+      </section>
     </ContentPage>
   );
 }
