@@ -63,7 +63,7 @@ export default function SignUpLoginView() {
               mode == "signup" ? "block " : "hidden "
             }`}
           >
-            <SignUpComponent mode={mode} />
+            <SignUpComponent />
           </div>
         </section>
       </div>
