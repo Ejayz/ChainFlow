@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
+import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +20,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body data-theme="light" className={inter.className}>
+        <Suspense fallback={<Loading/>}/>
+        <Toaster position="top-right" reverseOrder={true} />
         {children}
       </body>
     </html>

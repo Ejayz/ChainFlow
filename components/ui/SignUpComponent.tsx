@@ -3,11 +3,10 @@ import { error } from "console";
 import { Form, Formik, FormikProps } from "formik";
 import { CircleAlert, CircleHelp, Icon } from "lucide-react";
 import { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 import * as yup from "yup";
 
 export default function SignUpComponent() {
-
-
   const loginSchema = yup.object().shape({
     email: yup
       .string()
@@ -24,10 +23,6 @@ export default function SignUpComponent() {
         "Password must contain at least one special character"
       )
       .required("Password is required"),
-    walletAddress: yup
-      .string()
-      .matches(/^0x[a-fA-F0-9]{40}$/, "Invalid Mintme Wallet address")
-      .required("Mintme Wallet address is required"),
     repeatPassword: yup
       .string()
       .oneOf([yup.ref("password")], "Passwords must match")
@@ -46,27 +41,24 @@ export default function SignUpComponent() {
             initialValues={{
               email: "",
               password: "",
-              walletAddress: "",
               repeatPassword: "",
               acceptTerms: "false",
             }}
             validationSchema={loginSchema}
-            onSubmit={(values) => {
-              fetch("/api/login", {
+            onSubmit={async (values, actions) => {
+              const response = await fetch("/api/user/create", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Referer: "me",
                 },
                 body: JSON.stringify(values),
-              })
-                .then((res) => res.json())
-                .then((data) => {
-                  console.log(data);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+              });
+              if (response.status == 200) {
+                toast.success("Account created successfully");
+                actions.resetForm();
+              } else if (response.status == 422) {
+                toast.error("Email already exists. Please login instead.");
+              }
             }}
           >
             {({
@@ -76,8 +68,16 @@ export default function SignUpComponent() {
               handleChange,
               handleBlur,
               handleSubmit,
+              isSubmitting,
+              resetForm,
             }) => (
-              <Form className="card-body" onSubmit={handleSubmit}>
+              <Form
+                className="card-body"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }}
+              >
                 <div className="text-center lg:text-left">
                   <h1 className="text-5xl font-bold">Signup</h1>
                 </div>
@@ -98,39 +98,6 @@ export default function SignUpComponent() {
                       <span className="label-text text-error flex flex-row">
                         <CircleAlert className="mr-2" />
                         {errors.email}
-                      </span>
-                    ) : (
-                      ""
-                    )}
-                  </label>
-                </div>
-
-                <div className="form-control">
-                  <label className="label ">
-                    <span className="label-text flex flex-row justify-center">
-                      Wallet Address
-                      <div
-                        className="tooltip"
-                        data-tip="Should be a valid wallet address that supports Mintme Chain. We do not recommend using Mintme Market wallet address."
-                      >
-                        <CircleHelp className="p-0.5" color="orange" />
-                      </div>
-                    </span>
-                  </label>
-                  <input
-                    type="text"
-                    name="walletAddress"
-                    placeholder="Wallet Address"
-                    className="input input-bordered"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.walletAddress}
-                  />
-                  <label className="label ">
-                    {errors.walletAddress && touched.walletAddress ? (
-                      <span className="label-text text-error flex flex-row">
-                        <CircleAlert className="mr-2" />
-                        {errors.walletAddress}
                       </span>
                     ) : (
                       ""
@@ -212,7 +179,20 @@ export default function SignUpComponent() {
                   </label>
                 </div>
                 <div className="form-control mt-6">
-                  <button className="btn btn-primary">Sign Up</button>
+                  <button type="submit"
+                    className={`${
+                      isSubmitting ? "btn btn-disabled" : "btn btn-primary"
+                    }`}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <span className="loading loading-spinner"></span>{" "}
+                        Creating Account
+                      </>
+                    ) : (
+                      "Sign Up"
+                    )}
+                  </button>
                 </div>
               </Form>
             )}

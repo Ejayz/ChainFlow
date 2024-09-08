@@ -11,14 +11,21 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.44.2",
     "formik": "^2.4.6",
+    "jose": "^5.6.3",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.396.0",
+    "luxon": "^3.4.4",
     "mintme-rpc-web3js": "^1.0.3",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
+    "redis": "^4.6.15",
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/luxon": "^3.4.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
