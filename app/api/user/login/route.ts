@@ -2,12 +2,12 @@ import { createClient, PostgrestSingleResponse } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { decodeJwt } from "jose";
 import { insert } from "formik";
-const supabaseUrl = process.env.supabaseUrl ?? "";
-const supabaseKey = process.env.supabaseKey ?? "";
+const PROJECT_URL = process.env.PROJECT_URL ?? "";
+const ANON_PUBLIC = process.env.ANON_PUBLIC ?? "";
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const supabase = createClient(PROJECT_URL, ANON_PUBLIC);
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
     password: password,
